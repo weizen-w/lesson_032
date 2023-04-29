@@ -56,7 +56,7 @@ public class VocabularyIT {
       String wordToLowerCase = word.toLowerCase();
       wordsUser.add(wordToLowerCase);
     }
-    searchContains(wordsUser, vocabulary);
+    search(wordsUser, vocabulary);
   }
 
   private static Map<String, String> readingFile(File file) throws IOException{
@@ -77,23 +77,12 @@ public class VocabularyIT {
     return hashMap;
   }
 
-  private static void searchContains(List<String> list, Map<String, String> map) {
+  private static void search(List<String> list, Map<String, String> map) {
     System.out.println("==================================================================");
     System.out.println("\nРезультат поиска:");
-    boolean notFound = true;
     for (int i = 0; i < list.size(); i++) {
-      System.out.println("Для слова: " + list.get(i));
-      for (String key : map.keySet()) {
-        if (key.contains(list.get(i))) {
-          System.out.print(key + "(содержит \"" + list.get(i) + "\"): ");
-          System.out.println(map.get(key));
-          notFound = false;
-        }
-      }
-      if (notFound) {
-        System.out.println("Не найдено");
-      }
-      notFound = true;
+      System.out.println(map.getOrDefault(list.get(i), "Не найдено"));
     }
   }
+
 }
