@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
 public class VocabularyIT {
 //  Напишите программу создания небольшого словаря сленговых программерских выражений,
 //  чтобы она потом по запросу возвращала значения из этого словаря.
@@ -31,4 +38,14 @@ public class VocabularyIT {
 //  Не найдено
 //  код, который нужен, чтобы исправить несовершенство ранее написанного кода
 
+  public static void main(String[] args) throws IOException {
+    System.out.println(" == *** Сленговый словарь для айтишника *** ==");
+    System.out.println("Введите кол-во слов для поиска");
+    BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
+    int numberWords = bufferedReader1.read();
+    bufferedReader1.readLine();
+    System.out.println("Введите " + numberWords + " слов для поиска, каждое в своей строке:");
+    String word = bufferedReader1.readLine();
+
+  }
 }
