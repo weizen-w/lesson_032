@@ -45,15 +45,18 @@ public class VocabularyIT {
   public static void main(String[] args) throws IOException {
     Map<String, String> vocabulary = readingFile(new File("res/dict.txt"));
     List<String> wordsUser = new ArrayList<>();
-    System.out.println(" == *** Сленговый словарь для айтишника *** ==");
-    System.out.println("Введите кол-во слов для поиска");
+    System.out.println("\n == *** Сленговый словарь для айтишника *** ==");
+    System.out.print("Введите кол-во слов для поиска: ");
     BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
     int numberWords = Integer.parseInt(bufferedReader1.readLine()) ;
     System.out.println("Введите " + numberWords + " слов(а,ов) для поиска, каждое в своей строке:");
     for (int i = 0; i < numberWords; i++) {
+      System.out.print((i+1) + ". ");
       String word = bufferedReader1.readLine();
-      wordsUser.add(word);
+      String wordToLowerCase = word.toLowerCase();
+      wordsUser.add(wordToLowerCase);
     }
+    searchContains(wordsUser, vocabulary);
   }
 
   private static Map<String, String> readingFile(File file) throws IOException{
@@ -63,14 +66,34 @@ public class VocabularyIT {
       int numberLines = Integer.parseInt(bufferedReader.readLine());
       String sep = ":";
       for (int i = 0; i < numberLines; i++) {
-        String line = bufferedReader.readLine().toLowerCase();
+        String line = bufferedReader.readLine();
         int sepIndex = line.indexOf(sep);
-        String word = line.substring(0, sepIndex);
+        String word = line.substring(0, sepIndex).toLowerCase();
         String value = line.substring(sepIndex + 2);
         hashMap.put(word, value);
       }
         bufferedReader.close();
     }
     return hashMap;
+  }
+
+  private static void searchContains(List<String> list, Map<String, String> map) {
+    System.out.println("==================================================================");
+    System.out.println("\nРезультат поиска:");
+    boolean notFound = true;
+    for (int i = 0; i < list.size(); i++) {
+      System.out.println("Для слова: " + list.get(i));
+      for (String key : map.keySet()) {
+        if (key.contains(list.get(i))) {
+          System.out.print(key + "(содержит \"" + list.get(i) + "\"): ");
+          System.out.println(map.get(key));
+          notFound = false;
+        }
+      }
+      if (notFound) {
+        System.out.println("Не найдено");
+      }
+      notFound = true;
+    }
   }
 }
