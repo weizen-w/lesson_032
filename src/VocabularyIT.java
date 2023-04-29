@@ -43,19 +43,9 @@ public class VocabularyIT {
 //  код, который нужен, чтобы исправить несовершенство ранее написанного кода
 
   public static void main(String[] args) throws IOException {
-    Map<String, String> vocabulary = readingFile(new File("res/dict.txt"));
-    List<String> wordsUser = new ArrayList<>();
     System.out.println("\n == *** Сленговый словарь для айтишника *** ==");
-    System.out.print("Введите кол-во слов для поиска: ");
-    BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
-    int numberWords = Integer.parseInt(bufferedReader1.readLine());
-    System.out.println("Введите " + numberWords + " слов(а,ов) для поиска, каждое в своей строке:");
-    for (int i = 0; i < numberWords; i++) {
-      System.out.print((i + 1) + ". ");
-      String word = bufferedReader1.readLine();
-      String wordToLowerCase = word.toLowerCase();
-      wordsUser.add(wordToLowerCase);
-    }
+    Map<String, String> vocabulary = readingFile(new File("res/dict.txt"));
+    List<String> wordsUser = inputUser();
     search(wordsUser, vocabulary);
   }
 
@@ -85,4 +75,18 @@ public class VocabularyIT {
     }
   }
 
+  private static List<String> inputUser() throws IOException {
+    List<String> list = new ArrayList<>();
+    System.out.print("\nВведите кол-во слов для поиска: ");
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    int numberWords = Integer.parseInt(bufferedReader.readLine());
+    System.out.println("Введите " + numberWords + " слов(а,ов) для поиска, каждое в своей строке:");
+    for (int i = 0; i < numberWords; i++) {
+      System.out.print((i + 1) + ". ");
+      String word = bufferedReader.readLine();
+      String wordToLowerCase = word.toLowerCase();
+      list.add(wordToLowerCase);
+    }
+    return list;
+  }
 }
