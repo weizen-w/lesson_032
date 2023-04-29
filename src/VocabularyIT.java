@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VocabularyIT {
@@ -12,13 +15,14 @@ public class VocabularyIT {
 //  Формат входных данных
 //  Файл dict.txt
 //  В первой строке задано одно целое число n — количество слов в словаре.
-//  В следующих n строках записаны слова и их определения, разделенные двоеточием и символом пробела.
+//  В следующих n строках записаны слова и их определения, разделенные ":" и символом пробела.
 //  Ввод с клавиатуры
-//  В первой строке записано целое число m — количество поисковых слов, чье определение нужно вывести.
+//  В первой строке записано целое число m — кол-во поисковых слов, чье определение нужно вывести.
 //  В следующих m строках записаны сами слова, по одному на строке.
 
 //  Формат выходных данных
-//  Для каждого слова, независимо от регистра символов, если оно присутствует в словаре, необходимо вывести на экран его определение.
+//  Для каждого слова, независимо от регистра символов, если оно присутствует в словаре, необходимо
+//  вывести на экран его определение.
 //  Если слова в словаре нет, программа должна вывести "Не найдено", без кавычек.
 
 //  Пример входных данных
@@ -39,13 +43,34 @@ public class VocabularyIT {
 //  код, который нужен, чтобы исправить несовершенство ранее написанного кода
 
   public static void main(String[] args) throws IOException {
+    Map<String, String> vocabulary = readingFile(new File("res/dict.txt"));
+    List<String> wordsUser = new ArrayList<>();
     System.out.println(" == *** Сленговый словарь для айтишника *** ==");
     System.out.println("Введите кол-во слов для поиска");
     BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
-    int numberWords = bufferedReader1.read();
-    bufferedReader1.readLine();
-    System.out.println("Введите " + numberWords + " слов для поиска, каждое в своей строке:");
-    String word = bufferedReader1.readLine();
+    int numberWords = Integer.parseInt(bufferedReader1.readLine()) ;
+    System.out.println("Введите " + numberWords + " слов(а,ов) для поиска, каждое в своей строке:");
+    for (int i = 0; i < numberWords; i++) {
+      String word = bufferedReader1.readLine();
+      wordsUser.add(word);
+    }
+  }
 
+  private static Map<String, String> readingFile(File file) throws IOException{
+    Map<String, String> hashMap = new HashMap<>();
+    if (file.exists()) {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+      int numberLines = Integer.parseInt(bufferedReader.readLine());
+      String sep = ":";
+      for (int i = 0; i < numberLines; i++) {
+        String line = bufferedReader.readLine().toLowerCase();
+        int sepIndex = line.indexOf(sep);
+        String word = line.substring(0, sepIndex);
+        String value = line.substring(sepIndex + 2);
+        hashMap.put(word, value);
+      }
+        bufferedReader.close();
+    }
+    return hashMap;
   }
 }
