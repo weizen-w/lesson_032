@@ -48,10 +48,10 @@ public class VocabularyIT {
     System.out.println("\n == *** Сленговый словарь для айтишника *** ==");
     System.out.print("Введите кол-во слов для поиска: ");
     BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
-    int numberWords = Integer.parseInt(bufferedReader1.readLine()) ;
+    int numberWords = Integer.parseInt(bufferedReader1.readLine());
     System.out.println("Введите " + numberWords + " слов(а,ов) для поиска, каждое в своей строке:");
     for (int i = 0; i < numberWords; i++) {
-      System.out.print((i+1) + ". ");
+      System.out.print((i + 1) + ". ");
       String word = bufferedReader1.readLine();
       String wordToLowerCase = word.toLowerCase();
       wordsUser.add(wordToLowerCase);
@@ -59,7 +59,7 @@ public class VocabularyIT {
     search(wordsUser, vocabulary);
   }
 
-  private static Map<String, String> readingFile(File file) throws IOException{
+  private static Map<String, String> readingFile(File file) throws IOException {
     Map<String, String> hashMap = new HashMap<>();
     if (file.exists()) {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -72,7 +72,7 @@ public class VocabularyIT {
         String value = line.substring(sepIndex + 2);
         hashMap.put(word, value);
       }
-        bufferedReader.close();
+      bufferedReader.close();
     }
     return hashMap;
   }
