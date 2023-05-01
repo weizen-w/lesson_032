@@ -73,8 +73,8 @@ public class VocabularyIT {
   private static void search(List<String> list, Map<String, String> map) {
     System.out.println("==================================================================");
     System.out.println("\nРезультат поиска:");
-    for (int i = 0; i < list.size(); i++) {
-      System.out.println(map.getOrDefault(list.get(i), "Не найдено"));
+    for (String s : list) {
+      System.out.println(map.getOrDefault(s, "Не найдено"));
     }
   }
 
