@@ -1,0 +1,6 @@
+5
+read nya
+write helloworld.exe
+execute nya
+read pinglog
+write pinglog
