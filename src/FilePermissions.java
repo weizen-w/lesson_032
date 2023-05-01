@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -73,38 +74,42 @@ public class FilePermissions {
         }
         bufferedReader.close();
       }
+      return hashMap;
     }
-    return hashMap;
+    throw new FileNotFoundException("File not found: " + file);
   }
 
   private static void readAndWriteFiles(File readFile, File writeFile,
       Map<String, List<String>> map) throws IOException {
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(readFile));
-    FileWriter fileWriter = new FileWriter(writeFile);
-    if (bufferedReader.ready()) {
-      int numberOperations = Integer.parseInt(bufferedReader.readLine());
-      for (int i = 0; i < numberOperations; i++) {
-        String line = bufferedReader.readLine();
-        int firstSpaceIndex = line.indexOf(" ");
-        String operation = line.substring(0, firstSpaceIndex);
-        String operationValue = switch (operation) {
-          case "read" -> "R";
-          case "write" -> "W";
-          case "execute" -> "X";
-          default -> "Error";
-        };
-        String nameFile = line.substring(firstSpaceIndex + 1);
-        if (map.get(nameFile).contains(operationValue)) {
-          String result = String.format("%s: %s: OK\n", nameFile, operation);
-          fileWriter.write(result);
-        } else {
-          String result = String.format("%s: %s: Access denied\n", nameFile, operation);
-          fileWriter.write(result);
+    if (readFile.exists()) {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(readFile));
+      FileWriter fileWriter = new FileWriter(writeFile);
+      if (bufferedReader.ready()) {
+        int numberOperations = Integer.parseInt(bufferedReader.readLine());
+        for (int i = 0; i < numberOperations; i++) {
+          String line = bufferedReader.readLine();
+          int firstSpaceIndex = line.indexOf(" ");
+          String operation = line.substring(0, firstSpaceIndex);
+          String operationValue = switch (operation) {
+            case "read" -> "R";
+            case "write" -> "W";
+            case "execute" -> "X";
+            default -> "Error";
+          };
+          String nameFile = line.substring(firstSpaceIndex + 1);
+          if (map.get(nameFile).contains(operationValue)) {
+            String result = String.format("%s: %s: OK\n", nameFile, operation);
+            fileWriter.write(result);
+          } else {
+            String result = String.format("%s: %s: Access denied\n", nameFile, operation);
+            fileWriter.write(result);
+          }
         }
       }
+      bufferedReader.close();
+      fileWriter.close();
+    } else {
+      throw new FileNotFoundException("File not found: " + readFile);
     }
-    bufferedReader.close();
-    fileWriter.close();
   }
-
 }
