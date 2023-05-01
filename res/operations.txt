@@ -1,6 +1,13 @@
-5
+12
 read nya
 write helloworld.exe
+execute helloworld.exe
+read helloworld.exe
 execute nya
 read pinglog
 write pinglog
+execute pinglog
+write nya
+write goodluck
+execute goodluck
+read goodluck
