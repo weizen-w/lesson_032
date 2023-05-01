@@ -52,33 +52,8 @@ public class FilePermissions {
 
   public static void main(String[] args) throws IOException {
     Map<String, List<String>> files = readingFile(new File("res/files.txt"));
-
-    BufferedReader bufferedReader1 = new BufferedReader(new FileReader("res/operations.txt"));
-    FileWriter fileWriter = new FileWriter("res/results.txt");
-    if (bufferedReader1.ready()) {
-      int numberOperations = Integer.parseInt(bufferedReader1.readLine());
-      for (int i = 0; i < numberOperations; i++) {
-        String line = bufferedReader1.readLine();
-        int firstSpaceIndex = line.indexOf(" ");
-        String operation = line.substring(0, firstSpaceIndex);
-        String oparetionValue = switch (operation) {
-          case "read" -> "R";
-          case "write" -> "W";
-          case "execute" -> "X";
-          default -> "Error";
-        };
-        String nameFile = line.substring(firstSpaceIndex + 1);
-        if (files.get(nameFile).contains(oparetionValue)) {
-          String result = String.format("%s: %s: OK\n", nameFile, operation);
-          fileWriter.write(result);
-        } else {
-          String result = String.format("%s: %s: Access denied\n", nameFile, operation);
-          fileWriter.write(result);
-        }
-      }
-    }
-    bufferedReader1.close();
-    fileWriter.close();
+    readAndWriteFiles(new File("res/operations.txt"), new File("res/results.txt"),
+        files);
   }
 
   private static HashMap<String, List<String>> readingFile(File file) throws IOException {
@@ -100,6 +75,36 @@ public class FilePermissions {
       }
     }
     return hashMap;
+  }
+
+  private static void readAndWriteFiles(File readFile, File writeFile,
+      Map<String, List<String>> map) throws IOException {
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(readFile));
+    FileWriter fileWriter = new FileWriter(writeFile);
+    if (bufferedReader.ready()) {
+      int numberOperations = Integer.parseInt(bufferedReader.readLine());
+      for (int i = 0; i < numberOperations; i++) {
+        String line = bufferedReader.readLine();
+        int firstSpaceIndex = line.indexOf(" ");
+        String operation = line.substring(0, firstSpaceIndex);
+        String operationValue = switch (operation) {
+          case "read" -> "R";
+          case "write" -> "W";
+          case "execute" -> "X";
+          default -> "Error";
+        };
+        String nameFile = line.substring(firstSpaceIndex + 1);
+        if (map.get(nameFile).contains(operationValue)) {
+          String result = String.format("%s: %s: OK\n", nameFile, operation);
+          fileWriter.write(result);
+        } else {
+          String result = String.format("%s: %s: Access denied\n", nameFile, operation);
+          fileWriter.write(result);
+        }
+      }
+    }
+    bufferedReader.close();
+    fileWriter.close();
   }
 
 }
