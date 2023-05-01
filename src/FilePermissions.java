@@ -1,8 +1,7 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +66,7 @@ public class FilePermissions {
       bufferedReader.close();
     }
     BufferedReader bufferedReader1 = new BufferedReader(new FileReader("res/operations.txt"));
+    FileWriter fileWriter = new FileWriter("res/results.txt");
     if (bufferedReader1.ready()) {
       int numberOperations = Integer.parseInt(bufferedReader1.readLine());
       for (int i = 0; i < numberOperations; i++) {
@@ -81,12 +81,15 @@ public class FilePermissions {
         };
         String nameFile = line.substring(firstSpaceIndex + 1);
         if (files.get(nameFile).contains(oparetionValue)) {
-          System.out.println("OK");
+          String result = String.format("%s: %s: OK\n", nameFile, operation);
+          fileWriter.write(result);
         } else {
-          System.out.println("Access denied");
+          String result = String.format("%s: %s: Access denied\n", nameFile, operation);
+          fileWriter.write(result);
         }
       }
-      bufferedReader1.close();
     }
+    bufferedReader1.close();
+    fileWriter.close();
   }
 }
