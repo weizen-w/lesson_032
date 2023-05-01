@@ -1,3 +1,7 @@
+.idea/
+*.iml
+res/results.txt
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
