@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -50,21 +51,8 @@ public class FilePermissions {
 //  pinglog: write: OK
 
   public static void main(String[] args) throws IOException {
-    Map<String, List<String>> files = new HashMap<>();
-    BufferedReader bufferedReader = new BufferedReader(new FileReader("res/files.txt"));
-    if (bufferedReader.ready()) {
-      int numberFiles = Integer.parseInt(bufferedReader.readLine());
-      for (int i = 0; i < numberFiles; i++) {
-        String line = bufferedReader.readLine();
-        int firstSpaceIndex = line.indexOf(" ");
-        String nameFile = line.substring(0, firstSpaceIndex);
-        String restLine = line.substring(firstSpaceIndex + 1);
-        files.get(nameFile);
-        List<String> actions = Arrays.stream((restLine.split(" "))).toList();
-        files.put(nameFile, actions);
-      }
-      bufferedReader.close();
-    }
+    Map<String, List<String>> files = readingFile(new File("res/files.txt"));
+
     BufferedReader bufferedReader1 = new BufferedReader(new FileReader("res/operations.txt"));
     FileWriter fileWriter = new FileWriter("res/results.txt");
     if (bufferedReader1.ready()) {
@@ -92,4 +80,26 @@ public class FilePermissions {
     bufferedReader1.close();
     fileWriter.close();
   }
+
+  private static HashMap<String, List<String>> readingFile(File file) throws IOException {
+    HashMap<String, List<String>> hashMap = new HashMap<>();
+    if (file.exists()) {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+      if (bufferedReader.ready()) {
+        int numberFiles = Integer.parseInt(bufferedReader.readLine());
+        for (int i = 0; i < numberFiles; i++) {
+          String line = bufferedReader.readLine();
+          int firstSpaceIndex = line.indexOf(" ");
+          String nameFile = line.substring(0, firstSpaceIndex);
+          String restLine = line.substring(firstSpaceIndex + 1);
+          hashMap.get(nameFile);
+          List<String> actions = Arrays.stream((restLine.split(" "))).toList();
+          hashMap.put(nameFile, actions);
+        }
+        bufferedReader.close();
+      }
+    }
+    return hashMap;
+  }
+
 }
