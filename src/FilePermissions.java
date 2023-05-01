@@ -2,7 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FilePermissions {
@@ -48,7 +51,7 @@ public class FilePermissions {
 //  pinglog: write: OK
 
   public static void main(String[] args) throws IOException {
-    Map<String, String[]> files = new HashMap<>();
+    Map<String, List<String>> files = new HashMap<>();
     BufferedReader bufferedReader = new BufferedReader(new FileReader("res/files.txt"));
     if (bufferedReader.ready()) {
       int numberFiles = Integer.parseInt(bufferedReader.readLine());
@@ -58,10 +61,32 @@ public class FilePermissions {
         String nameFile = line.substring(0, firstSpaceIndex);
         String restLine = line.substring(firstSpaceIndex + 1);
         files.get(nameFile);
-        String[] actions = restLine.split(" ");
+        List<String> actions = Arrays.stream((restLine.split(" "))).toList();
         files.put(nameFile, actions);
       }
       bufferedReader.close();
+    }
+    BufferedReader bufferedReader1 = new BufferedReader(new FileReader("res/operations.txt"));
+    if (bufferedReader1.ready()) {
+      int numberOperations = Integer.parseInt(bufferedReader1.readLine());
+      for (int i = 0; i < numberOperations; i++) {
+        String line = bufferedReader1.readLine();
+        int firstSpaceIndex = line.indexOf(" ");
+        String operation = line.substring(0, firstSpaceIndex);
+        String oparetionValue = switch (operation) {
+          case "read" -> "R";
+          case "write" -> "W";
+          case "execute" -> "X";
+          default -> "Error";
+        };
+        String nameFile = line.substring(firstSpaceIndex + 1);
+        if (files.get(nameFile).contains(oparetionValue)) {
+          System.out.println("OK");
+        } else {
+          System.out.println("Access denied");
+        }
+      }
+      bufferedReader1.close();
     }
   }
 }
