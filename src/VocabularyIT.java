@@ -74,7 +74,8 @@ public class VocabularyIT {
     System.out.println("==================================================================");
     System.out.println("\nРезультат поиска:");
     for (String s : list) {
-      System.out.println(map.getOrDefault(s, "Не найдено"));
+      String numStr = (list.indexOf(s) + 1) + ". ";
+      System.out.println(numStr + map.getOrDefault(s, "Не найдено"));
     }
   }
 
